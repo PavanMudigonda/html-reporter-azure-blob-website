@@ -49,3 +49,4 @@ runs:
     - ${{ inputs.results_history }}
     - ${{ inputs.keep_reports }} 
     - ${{ inputs.report_url }}  
+    - ${{ inputs.account_name }}
