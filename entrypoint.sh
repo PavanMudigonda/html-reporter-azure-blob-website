@@ -31,6 +31,7 @@
 
 EOF
 
+az config set extension.use_dynamic_install=yes_without_prompt
 
 mkdir -p ./${INPUT_RESULTS_HISTORY}
 
