@@ -5,11 +5,8 @@ branding:
   icon: 'layout'
   color: 'green'
 inputs:
-  blob:
+  SAS:
     description: 'blob name'
-    required: true
-  connection_string:
-    description: 'Connection string'
     required: true
   container:
     description: 'Container name'
@@ -46,11 +43,10 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.connection_string }}
+    - ${{ inputs.sas }}
     - ${{ inputs.container }}
     - ${{ inputs.test_results }}
     - ${{ inputs.results_history }}
     - ${{ inputs.keep_reports }} 
     - ${{ inputs.report_url }}  
     - ${{ inputs.account_name }}
-    - ${{ inputs.blob }}
