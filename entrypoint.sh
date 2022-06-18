@@ -41,10 +41,10 @@ fi
 cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
-sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line;
-    do
-        echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
-    done;
+# sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line;
+#     do
+#         echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
+#     done;
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 # cat ./${INPUT_RESULTS_HISTORY}/index.html
 
