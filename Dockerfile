@@ -1,6 +1,6 @@
-FROM peterdavehello/azcopy
+FROM alpine
 
-ARG VERSION=azcopy_linux_amd64_10.15.0
+# ARG VERSION=azcopy_linux_amd64_10.15.0
 
 RUN apk --update add --virtual build-dependencies --no-cache wget tar 
 RUN apk --update add libc6-compat ca-certificates
