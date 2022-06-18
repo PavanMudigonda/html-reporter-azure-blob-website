@@ -5,6 +5,9 @@ branding:
   icon: 'layout'
   color: 'green'
 inputs:
+  blob:
+    description: 'blob name'
+    required: true
   connection_string:
     description: 'Connection string'
     required: true
