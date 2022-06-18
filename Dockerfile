@@ -10,11 +10,6 @@ LABEL repository="https://github.com/PavanMudigonda/html-reporter-s3-website"
 LABEL homepage="https://abcd.guru/"
 LABEL maintainer="Pavan Mudigonda <mnpawan@gmail.com>"
 
-# https://github.com/aws/aws-cli/blob/master/CHANGELOG.rst
-ENV AWSCLI_VERSION='1.18.14'
-
-RUN pip install --quiet --no-cache-dir awscli==${AWSCLI_VERSION}
-
 RUN apk update && \
     apk add --no-cache bash wget unzip && \
     rm -rf /var/cache/apk/* && \
