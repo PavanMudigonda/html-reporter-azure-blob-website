@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine
 
 ARG VERSION=azcopy_linux_amd64_10.15.0
 
