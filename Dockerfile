@@ -1,4 +1,4 @@
-FROM alpine
+FROM peterdavehello/azcopy
 
 ARG VERSION=azcopy_linux_amd64_10.15.0
 
@@ -8,13 +8,13 @@ RUN apk update && \
     apk add --no-cache bash wget unzip && \
     rm -rf /var/cache/apk/*
 
-RUN wget -O azcopyv10.tar https://aka.ms/downloadazcopy-v10-linux && \
-    tar -xf azcopyv10.tar && \
-    mkdir /app && \
-    mv ${VERSION}/azcopy /app/azcopy && \
-    rm -rf azcopy* && \
-    apk del build-dependencies && \
-    apk --no-cache add jq
+# RUN wget -O azcopyv10.tar https://aka.ms/downloadazcopy-v10-linux && \
+#     tar -xf azcopyv10.tar && \
+#     mkdir /app && \
+#     mv ${VERSION}/azcopy /app/azcopy && \
+#     rm -rf azcopy* && \
+#     apk del build-dependencies && \
+#     apk --no-cache add jq
     
 LABEL "com.github.actions.name"="HTML Reporter Azure Blob Upload"
 LABEL "com.github.actions.description"="Upload HTML Test Results to an Azure Blob repository"
