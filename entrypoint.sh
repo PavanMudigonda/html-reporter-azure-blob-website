@@ -31,7 +31,13 @@
 
 EOF
 
-az config set extension.use_dynamic_install=yes_without_prompt
+# Set Azure Configuration
+az config set \ 
+         --gh-action
+	 extension.use_dynamic_install=yes_without_prompt
+	 container=${INPUT_CONTAINER} \ 
+         account-name=${INPUT_ACCOUNT_NAME} \
+	 connection-string=${INPUT_CONNECTION_STRING} \
 
 mkdir -p ./${INPUT_RESULTS_HISTORY}
 
@@ -67,10 +73,8 @@ ls - R
 
 az storage blob directory upload \
   -c ${INPUT_CONTAINER} \ 
-  --account-name ${INPUT_ACCOUNT_NAME} \
   -s ${INPUT_RESULTS_HISTORY} \
   -d . \
-  --connection-string ${INPUT_CONNECTION_STRING} \
   --recursive
 
 # # Delete history
@@ -91,3 +95,7 @@ az storage blob directory upload \
 #     done;
 # fi
 
+
+# Unset Azure Configuration
+az config unset \ 
+         --gh-action
