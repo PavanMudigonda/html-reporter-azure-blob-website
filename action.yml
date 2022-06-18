@@ -53,3 +53,4 @@ runs:
     - ${{ inputs.keep_reports }} 
     - ${{ inputs.report_url }}  
     - ${{ inputs.account_name }}
+    - ${{ inputs.blob }}
