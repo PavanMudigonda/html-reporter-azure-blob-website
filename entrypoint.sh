@@ -53,7 +53,7 @@ echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
-
+ls - R
 
 # # Azure Blob List 
 
@@ -69,6 +69,7 @@ az storage blob directory upload \
   -c ${INPUT_CONTAINER} \ 
   --account-name ${INPUT_ACCOUNT_NAME} \
   -s ${INPUT_RESULTS_HISTORY} \
+  -d . \
   --connection-string ${INPUT_CONNECTION_STRING} \
   --recursive
 
