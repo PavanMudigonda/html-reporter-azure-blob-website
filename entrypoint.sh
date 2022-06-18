@@ -32,8 +32,6 @@
 EOF
 
 # Set Azure Configuration
-az config set extension.use_dynamic_install=yes_without_prompt;
-
 az config set --local \
 	 container=${INPUT_CONTAINER} \ 
          account-name=${INPUT_ACCOUNT_NAME} \
@@ -70,9 +68,10 @@ ls - R
 #   # | jq -r '{"items"}' \
 
 # Azure Blob Upload
+Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
+--recursive
 
-
-az storage blob directory upload -c ${INPUT_CONTAINER} -s "${INPUT_RESULTS_HISTORY}/*" -d directory --recursive
+# az storage blob directory upload -c ${INPUT_CONTAINER} -s "${INPUT_RESULTS_HISTORY}/*" -d directory --recursive
 
 
 # # Delete history
