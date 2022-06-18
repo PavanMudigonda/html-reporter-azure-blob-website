@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 
 cat > index-template.html <<EOF
 
@@ -30,8 +30,6 @@ cat > index-template.html <<EOF
 	<a href=".">.</a><br>
 
 EOF
-
-#----------------------
 
 mkdir -p ./${INPUT_RESULTS_HISTORY}
 
@@ -79,6 +77,3 @@ Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core
 #     done;
 # fi
 
-
-# Unset Azure Configuration
-az config unset --local
