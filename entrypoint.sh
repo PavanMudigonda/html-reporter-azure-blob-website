@@ -51,13 +51,12 @@ echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
-ls - R
 
-Azcopy --version
+sh -c "Azcopy --version"
 
 # Azure Blob Upload
-Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
---recursive
+sh -c "Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
+--recursive"
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
