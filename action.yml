@@ -1,10 +1,20 @@
-name: 'html-reporter-aws-s3-website'
-description: 'HTML Test Results with history to publish to AWS S3 Bucket'
+name: 'html-reporter-azureblob-website'
+description: 'HTML Test Results with history to publish to Azure Blob'
 author: 'Pavan Mudigonda'
 branding:
   icon: 'layout'
   color: 'green'
 inputs:
+  connection_string:
+    description: 'Connection string'
+    required: true
+  container:
+    description: 'Container name'
+    required: false
+    default: $web
+  account_name:
+    description: 'account name'
+    required: false
   test_results:
     description: 'test result data dir'
     required: true
@@ -32,3 +42,10 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.connection_string }}
+    - ${{ inputs.container }}
+    - ${{ inputs.test_results }}
+    - ${{ inputs.results_history }}
+    - ${{ inputs.keep_reports }} 
+    - ${{ inputs.report_url }}  

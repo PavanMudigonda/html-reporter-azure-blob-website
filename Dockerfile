@@ -1,12 +1,12 @@
-FROM python:3.11-rc-alpine
+FROM mcr.microsoft.com/azure-cli:latest
 
-LABEL "com.github.actions.name"="Playwright HTML Reporter AWS S3 Upload"
-LABEL "com.github.actions.description"="Upload Playwright HTML Test Results to an AWS S3 repository"
+LABEL "com.github.actions.name"="HTML Reporter AWS S3 Upload"
+LABEL "com.github.actions.description"="Upload HTML Test Results to an AWS S3 repository"
 LABEL "com.github.actions.icon"="refresh-cw"
 LABEL "com.github.actions.color"="green"
 
 LABEL version="0.1"
-LABEL repository="https://github.com/PavanMudigonda/playwright-html-reporter-s3-website"
+LABEL repository="https://github.com/PavanMudigonda/html-reporter-s3-website"
 LABEL homepage="https://abcd.guru/"
 LABEL maintainer="Pavan Mudigonda <mnpawan@gmail.com>"
 
@@ -17,7 +17,8 @@ RUN pip install --quiet --no-cache-dir awscli==${AWSCLI_VERSION}
 
 RUN apk update && \
     apk add --no-cache bash wget unzip && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    apk --no-cache add jq
 
 ENV ROOT=/app
 
