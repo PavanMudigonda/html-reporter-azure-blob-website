@@ -4,6 +4,9 @@ ARG VERSION=azcopy_linux_amd64_10.15.0
 
 RUN apk --update add --virtual build-dependencies --no-cache wget tar 
 RUN apk --update add libc6-compat ca-certificates
+RUN apk update && \
+    apk add --no-cache bash wget unzip && \
+    rm -rf /var/cache/apk/*
 
 RUN wget -O azcopyv10.tar https://aka.ms/downloadazcopy-v10-linux && \
     tar -xf azcopyv10.tar && \
