@@ -52,10 +52,46 @@ echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
 
-bash -c "Azcopy --version"
+# Install Azcopy
 
+# https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#use-azcopy-in-a-script
+echo "Setup AzCopy.."
+mkdir -p tmp
+cd tmp
+wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
+cp ./azcopy /usr/bin/
+cd ..
+
+# Check that azcopy command works from container
+azcopy --version
+
+# Generate SAS Token
+#STORAGE_ACCOUNT_NAME=<your storage account name - passed in from env variable>
+
+# echo "Create SAS token.."
+# EXPIRE=$(date -u -d "3 months" '+%Y-%m-%dT%H:%M:%SZ')
+# START=$(date -u -d "-1 day" '+%Y-%m-%dT%H:%M:%SZ')
+
+# echo "Get account key for storage account"
+# STORAGE_ACCOUNT_KEY=$(az storage account keys list \
+#  -g $RESOURCE_GROUP_NAME \
+#  --account-name $STORAGE_ACCOUNT_NAME \
+#   --query "[0].value" \
+#   --output tsv)
+
+# AZURE_STORAGE_SAS_TOKEN=$(az storage account generate-sas \
+#  --account-name $STORAGE_ACCOUNT_NAME \
+#  --account-key $STORAGE_ACCOUNT_KEY \
+#  --start $START \
+#  --expiry $EXPIRE \
+#  --https-only \
+#  --resource-types sco \
+#  --services b \
+#  --permissions dlrw -o tsv | sed 's/%3A/:/g;s/\"//g')
+ 
+ 
 # Azure Blob Upload
-bash -c "Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
+azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}
 --recursive"
 
 # # Delete history
