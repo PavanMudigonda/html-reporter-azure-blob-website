@@ -21,6 +21,7 @@ jobs:
           connection_string: ${{ secrets.CONNECTION_STRING }}
           account_name: ${{ secrets.ACCOUNT_NAME }}
           container: ${{ secrets.CONTAINER }}
+          blob: ${{ secrets.blob }}
 
       - name: Post the link to the report
         if: always()
