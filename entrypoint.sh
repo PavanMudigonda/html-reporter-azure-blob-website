@@ -52,17 +52,7 @@ echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
-set -e
 
-if [ -z "$CONNECTION_STRING" ]; then
-  echo "CONNECTION_STRING is not set. Quitting."
-  exit 1
-fi
-
-if [ -z "$CONTAINER" ]; then
-  echo "CONTAINER is not set. Quitting."
-  exit 1
-fi
 
 # # Azure Blob List 
 
