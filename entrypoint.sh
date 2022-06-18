@@ -92,7 +92,7 @@ azcopy --version
  
 # Azure Blob Upload
 
-sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${INPUT_SAS}' --recursive"
+sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${INPUT_SAS}/${INPUT_BLOB}' --recursive"
 
 
 # # Delete history
