@@ -32,9 +32,8 @@
 EOF
 
 # Set Azure Configuration
-az config set \ 
-         --gh-action
-	 extension.use_dynamic_install=yes_without_prompt
+az storage config set extension.use_dynamic_install=yes_without_prompt
+az config set --local \
 	 container=${INPUT_CONTAINER} \ 
          account-name=${INPUT_ACCOUNT_NAME} \
 	 connection-string=${INPUT_CONNECTION_STRING} \
@@ -97,5 +96,4 @@ az storage blob directory upload \
 
 
 # Unset Azure Configuration
-az config unset \ 
-         --gh-action
+az config unset --local
