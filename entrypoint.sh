@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-          cat > index-template.html <<EOF
+cat > index-template.html <<EOF
 
 <!DOCTYPE html>
 <html>
@@ -36,11 +36,27 @@ az config set --local \
 	 container=${INPUT_CONTAINER} \ 
          account-name=${INPUT_ACCOUNT_NAME} \
 	 connection-string=${INPUT_CONNECTION_STRING} \
+	 
+# Install Azure Copy AzCopy
+
+#Download AzCopy
+wget https://aka.ms/downloadazcopy-v10-linux
+
+#Expand Archive
+tar -xvf downloadazcopy-v10-linux
+
+#(Optional) Remove existing AzCopy version
+sudo rm /usr/bin/azcopy
+
+#Move AzCopy to the destination you want to store it
+sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
+
+#----------------------
 
 mkdir -p ./${INPUT_RESULTS_HISTORY}
 
 if [[ ${INPUT_REPORT_URL} != '' ]]; then
-    S3_WEBSITE_URL="${INPUT_REPORT_URL}"
+    AZ_WEBSITE_URL="${INPUT_REPORT_URL}"
 fi
 
 cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
@@ -70,9 +86,6 @@ ls - R
 # Azure Blob Upload
 Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
 --recursive
-
-# az storage blob directory upload -c ${INPUT_CONTAINER} -s "${INPUT_RESULTS_HISTORY}/*" -d directory --recursive
-
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
