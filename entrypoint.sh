@@ -52,10 +52,10 @@ echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
 
-sh -c "Azcopy --version"
+bash -c "Azcopy --version"
 
 # Azure Blob Upload
-sh -c "Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
+bash -c "Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
 --recursive"
 
 # # Delete history
