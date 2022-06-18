@@ -31,12 +31,7 @@ cat > index-template.html <<EOF
 
 EOF
 
-# Set Azure Configuration
-az config set --local \
-	 container=${INPUT_CONTAINER} \ 
-         account-name=${INPUT_ACCOUNT_NAME} \
-	 connection-string=${INPUT_CONNECTION_STRING} \
-	 
+ 
 # Install Azure Copy AzCopy
 
 #Download AzCopy
@@ -75,13 +70,7 @@ cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NU
 
 ls - R
 
-# # Azure Blob List 
-
-# az storage blob list \
-#   --connection-string ${INPUT_CONNECTION_STRING} \
-#   -c ${INPUT_CONTAINER} \
-#   --account-name ${INPUT_ACCOUNT_NAME} \
-#   # | jq -r '{"items"}' \
+Azcopy --version
 
 # Azure Blob Upload
 Azcopy copy "${INPUT_RESULTS_HISTORY}" "${INPUT_ACCOUNT_NAME}.${INPUT_BLOB}.core.windows.net/${INPUT_CONTAINER}/directoryname?${INPUT_SAS}"
