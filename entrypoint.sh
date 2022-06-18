@@ -71,11 +71,9 @@ ls - R
 
 # Azure Blob Upload
 
-az storage blob directory upload \
-  -c ${INPUT_CONTAINER} \ 
-  -s ${INPUT_RESULTS_HISTORY} \
-  -d . \
-  --recursive
+
+az storage blob directory upload -c ${INPUT_CONTAINER} -s "${INPUT_RESULTS_HISTORY}/*" -d directory --recursive
+
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
