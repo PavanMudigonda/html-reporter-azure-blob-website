@@ -62,7 +62,7 @@ The following settings must be passed as environment variables as shown in the e
 | `SOURCE_DIR` | The local directory (or file) you wish to sync/upload to S3. For example, `public`. Defaults to your entire repository. | `env` | No | `./` (root of cloned repository) |
 | `DEST_DIR` | The directory inside of the S3 bucket you wish to sync/upload to. For example, `my_project/assets`. Defaults to the root of the bucket. | `env` | No | `/` (root of bucket) |
 
-### AWS S3 Bucket folder structure sample:- Organized by Github Run Number
+### Azure Container Blob structure sample:- Organized by Github Run Number
 
 Note:- Always the index.html points to Test Results History Page.
 
@@ -70,17 +70,13 @@ Note:- Always the index.html points to Test Results History Page.
 
 ### when you click on a link
 
-![image](https://user-images.githubusercontent.com/29324338/173656755-d47f949b-b11b-45fe-ae94-951751104397.png)
+<img width="529" alt="image" src="https://user-images.githubusercontent.com/29324338/174486678-271f0cf2-e778-41cf-acc1-e4a119c01452.png">
 
 ### AWS S3 Static Website Sample:- Full Report, Errors, Screenshots, Trace, Video is fully visible !
 
-![image](https://user-images.githubusercontent.com/29324338/173658258-88247b45-c2f5-46d7-b2a0-12faaae72b52.png)
+<img width="1228" alt="image" src="https://user-images.githubusercontent.com/29324338/174486693-39d875b5-3d82-47f6-85ca-69beae6666f5.png">
+<img width="1193" alt="image" src="https://user-images.githubusercontent.com/29324338/174486699-bf783b17-9153-4234-8076-9d2de2e3f4e8.png">
 
-![image](https://user-images.githubusercontent.com/29324338/173658415-49b56fb9-d317-49db-8e0e-e3b6e8196c0a.png)
-
-![image](https://user-images.githubusercontent.com/29324338/173658484-1121d0c2-2df4-4bf1-b2d0-a37f6f77c0d5.png)
-
-![image](https://user-images.githubusercontent.com/29324338/173658512-23658238-2c47-407f-8c30-869812629228.png)
 
 
 ## License
