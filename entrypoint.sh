@@ -65,7 +65,8 @@ echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Resul
 
 sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
     do 
-    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; echo "$FOLDER_NAME" >> folder_file.txt
+    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; 
+	NEW_FOLDER_NAME="$( cut -d ';' -f 1 <<< "$FOLDER_NAME" )";  echo "$NEW_FOLDER_NAME"; >> folder_file.txt
         sort -u folder_file.txt > clean_folder_file.txt
     done;
 
@@ -89,7 +90,8 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 # # Delete history
 sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
     do 
-    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; echo "$FOLDER_NAME" >> folder_file.txt
+    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; 
+	NEW_FOLDER_NAME="$( cut -d ';' -f 1 <<< "$FOLDER_NAME" )";  echo "$NEW_FOLDER_NAME"; >> folder_file.txt
         sort -u folder_file.txt > clean_folder_file.txt
     done;
     
@@ -102,7 +104,7 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
   NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}));
   echo "remove old reports";
   echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}";
-  cat clean_folder_file.txt | | grep -v 'index.html;' | sort -n | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | while read line;
+  cat clean_folder_file.txt | grep -v 'index.html;' | sort -n | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | while read line;
   	do
   		sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${line}/*?${INPUT_SAS}' --recursive=true"
 	        echo "deleted prefix folder : ${line}";
