@@ -63,8 +63,9 @@ cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' | sort -n | while read line;
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sort -n | while read line;
     do 
+      echo $line | sed 's//.*//';
       echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
     done;
 
@@ -86,15 +87,15 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 # # Delete history
 COUNT=$( sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | wc -l )
 
-echo "count folders in results-history: ${COUNT}"
-echo "keep reports count ${INPUT_KEEP_REPORTS}"
-INPUT_KEEP_REPORTS=$((INPUT_KEEP_REPORTS+1))
-echo "if ${COUNT} > ${INPUT_KEEP_REPORTS}"
+echo "count folders in results-history: ${COUNT}";
+echo "keep reports count ${INPUT_KEEP_REPORTS}";
+INPUT_KEEP_REPORTS=$((INPUT_KEEP_REPORTS+1));
+echo "if ${COUNT} > ${INPUT_KEEP_REPORTS}";
 if (( COUNT > INPUT_KEEP_REPORTS )); then
-  NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}))
-  echo "remove old reports"
-  echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}"
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' |  head -n ${NUMBER_OF_FOLDERS_TO_DELETE} sort -n | while read line; 
+  NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}));
+  echo "remove old reports";
+  echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}";
+  sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' |  head -n ${NUMBER_OF_FOLDERS_TO_DELETE} sort -n | while read line; 
     do 
       if ( VAR != 'index.html' );
 	      {
