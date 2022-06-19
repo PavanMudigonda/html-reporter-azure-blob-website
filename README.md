@@ -1,6 +1,6 @@
 Example workflow file [html-reporter-azure-blob-website](https://github.com/PavanMudigonda/html-reporter-azure-blob-website/blob/main/.github/workflows/main.yml))
 
-# HTML Test Results on AWS S3 Bucket with history action
+# HTML Test Results on Azure Blob with history action
 
 ## Usage
 
@@ -43,9 +43,9 @@ This Action defines the following formal inputs.
 
 | Name | Req | Description
 |-|-|-|
-| **`account_name`**  | true | Account Name is mandatory.
-| **`container`** | true | Container name is mandatory.
-|**`sas`** | true | SAS Token is Mandatory for Azure Storage.
+| **`account_name`**  | true | Azure Account Name is mandatory.
+| **`container`** | true | Azure Container name is mandatory.
+|**`sas`** | true | Azure Shared Access Signature (SAS) Token is Mandatory for Azure Storage.
 |**`keep_reports`** | false | Defaults to 0. If you want this action to delete reports which are more than certian limit, then mention that limit.
 |**`report_url`** | true | Specify your website URL. You could use Github Secrets.
 |**`results_history`** | false | Defaults to results-history.
