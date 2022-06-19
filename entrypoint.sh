@@ -88,9 +88,18 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 
 # Azure Blob AzCopy List 
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --output-type text" | grep "INFO:" | sed 's/INFO: //' | while read line; do awk -F '/' '{print $0}'; done;
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
+	do 
+	  awk -F '/' '{print $1;}' >> array.txt
+	done;
 
 #----------------------------------------------------------------------------------------------------------------------------------------
+# AzCopy Delete 
+
+#sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true"
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
