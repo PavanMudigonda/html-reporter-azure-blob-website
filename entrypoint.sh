@@ -65,7 +65,7 @@ echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Resul
 
 sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sort -n | while read line;
     do 
-      newline=`sed "s//.*//g"<<<$line`
+      newline="$(echo $line | sed 's//.*//g')"
       echo "├── <a href="./"${newline}"/">RUN ID: "${newline}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
     done;
 
@@ -99,7 +99,7 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
     do 
       if ( VAR != 'index.html' );
 	      {
-	      newline=`sed "s//.*//g"<<<$line`
+	      newline="$(echo $line | sed 's//.*//g')"
 	      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${newline}/*?${INPUT_SAS}' --recursive=true"
 	      echo "deleted prefix folder : ${newline}";
 	      }
