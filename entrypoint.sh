@@ -59,16 +59,17 @@ azcopy --version
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
-cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
+cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index1.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sort -n | while read line;
-    do 
-      newline="$(echo $line | sed 's//.*//g')"
-      echo "├── <a href="./"${newline}"/">RUN ID: "${newline}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
-    done;
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
 
+    do 
+    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; echo "$FOLDER_NAME";
+        echo "├── <a href="./"${FOLDER_NAME}"/">RUN ID: "${FOLDER_NAME}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index1.html;
+	sort -u ./${INPUT_RESULTS_HISTORY}/index1.html > index.html
+    done;
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 cat ./${INPUT_RESULTS_HISTORY}/index.html
 
@@ -99,10 +100,10 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
     do 
       if ( VAR != 'index.html' );
 	      {
-	      newline="$(echo $line | sed 's//.*//g')"
-	      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${newline}/*?${INPUT_SAS}' --recursive=true"
-	      echo "deleted prefix folder : ${newline}";
+    	      FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; echo "$FOLDER_NAME";
+	      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${FOLDER_NAME}/*?${INPUT_SAS}' --recursive=true"
+	      echo "deleted prefix folder : ${FOLDER_NAME}";
 	      }
-      fi
+      fi;
     done;
-fi
+fi;
