@@ -88,15 +88,9 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 
 # Azure Blob AzCopy List 
 
-touch array.json
 echo "{" >> array.json
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; 
-	do 
-	  var=$(awk -F '/' '{print $1;}');
-	  echo $var+',' >> array.json
-	done;
-echo "}" >> array.json
-sh -c "cat array.json"
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; do awk -F '/' '{print $1;}'; done; | uniq;
+
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 # AzCopy Delete 
