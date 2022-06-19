@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 
+#----------------------------------------------------------------------------------------------------------------------------------------
 cat > index-template.html <<EOF
 
 <!DOCTYPE html>
@@ -31,11 +32,18 @@ cat > index-template.html <<EOF
 
 EOF
 
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
 mkdir -p ./${INPUT_RESULTS_HISTORY}
 
 if [[ ${INPUT_REPORT_URL} != '' ]]; then
     AZ_WEBSITE_URL="${INPUT_REPORT_URL}"
 fi
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
 
 cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 
@@ -52,6 +60,9 @@ echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
 
+#----------------------------------------------------------------------------------------------------------------------------------------
+
+
 # Install Azcopy
 
 # https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#use-azcopy-in-a-script
@@ -65,35 +76,15 @@ cd ..
 # Check that azcopy command works from container
 azcopy --version
 
-# Generate SAS Token
-#STORAGE_ACCOUNT_NAME=<your storage account name - passed in from env variable>
-
-# echo "Create SAS token.."
-# EXPIRE=$(date -u -d "3 months" '+%Y-%m-%dT%H:%M:%SZ')
-# START=$(date -u -d "-1 day" '+%Y-%m-%dT%H:%M:%SZ')
-
-# echo "Get account key for storage account"
-# STORAGE_ACCOUNT_KEY=$(az storage account keys list \
-#  -g $RESOURCE_GROUP_NAME \
-#  --account-name $STORAGE_ACCOUNT_NAME \
-#   --query "[0].value" \
-#   --output tsv)
-
-# AZURE_STORAGE_SAS_TOKEN=$(az storage account generate-sas \
-#  --account-name $STORAGE_ACCOUNT_NAME \
-#  --account-key $STORAGE_ACCOUNT_KEY \
-#  --start $START \
-#  --expiry $EXPIRE \
-#  --https-only \
-#  --resource-types sco \
-#  --services b \
-#  --permissions dlrw -o tsv | sed 's/%3A/:/g;s/\"//g')
- 
  
 # Azure Blob Upload
 
 sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true"
 
+
+# Azure Blob AzCopy List 
+
+azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
