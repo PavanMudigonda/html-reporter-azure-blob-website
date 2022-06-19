@@ -37,6 +37,25 @@ jobs:
 
 ### Configuration
 
+### Inputs
+
+This Action defines the following formal inputs.
+
+| Name | Req | Description
+|-|-|-|
+| **`account_name`**  | true | Account Name is mandatory.
+| **`container`** | true | Container name is mandatory.
+|**`sas`** | true | SAS Token is Mandatory for Azure Storage.
+|**`keep_reports`** | false | Defaults to 0. If you want this action to delete reports which are more than certian limit, then mention that limit.
+|**`report_url`** | true | Specify your website URL. You could use Github Secrets.
+|**`results_history`** | false | Defaults to results-history.
+|**`test_results`** | false | Defaults to test-results. If your results are outputed to another folder, please specify.
+
+    
+### Outputs
+
+This Action defines the following formal outputs.
+
 
 
 ### Azure Container Blob structure sample:- Organized by Github Run Number
