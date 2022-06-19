@@ -63,14 +63,13 @@ cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' | sort -n | while read line; 
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' | sort -n | while read line;
     do 
       echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
     done;
 
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 cat ./${INPUT_RESULTS_HISTORY}/index.html
-
 
 echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
@@ -95,10 +94,14 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
   NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}))
   echo "remove old reports"
   echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}"
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} sort -n | while read line; 
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sed 's//.*//' |  head -n ${NUMBER_OF_FOLDERS_TO_DELETE} sort -n | while read line; 
     do 
-      VAR="$(awk -F '/' '{print $1;}')";
-      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${VAR}/*?${INPUT_SAS}' --recursive=true"
-      echo "deleted prefix folder : ${line}";
+      if ( VAR != 'index.html' );
+	      {
+	      VAR="$(awk -F '/' '{print $1;}')";
+	      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${VAR}/*?${INPUT_SAS}' --recursive=true"
+	      echo "deleted prefix folder : ${line}";
+	      }
+      fi
     done;
 fi
