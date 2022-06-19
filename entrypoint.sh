@@ -69,7 +69,7 @@ sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_
         sort -u folder_file.txt > clean_folder_file.txt
     done;
 
-cat clean_folder_file.txt | sort -nr | while read line; do echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; done
+cat clean_folder_file.txt | | grep -v 'index.html;' | sort -nr | while read line; do echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; done
 
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 cat ./${INPUT_RESULTS_HISTORY}/index.html
@@ -102,9 +102,9 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
   NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}));
   echo "remove old reports";
   echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}";
-  cat clean_folder_file.txt | sort -n | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | while read line;
+  cat clean_folder_file.txt | | grep -v 'index.html;' | sort -n | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | while read line;
   	do
   		sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${line}/*?${INPUT_SAS}' --recursive=true"
-	        echo "deleted prefix folder : ${FOLDER_NAME}";
+	        echo "deleted prefix folder : ${line}";
 	done;
 fi;
