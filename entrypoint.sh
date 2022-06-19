@@ -88,6 +88,7 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 
 # Azure Blob AzCopy List 
 
+touch array.json
 echo "{" >> array.json
 sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; 
 	do 
