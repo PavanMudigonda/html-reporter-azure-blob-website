@@ -50,7 +50,7 @@ cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; 
 	do 
-		var=$("awk -F '/' '{print $1;}'");
+		var="$(awk -F '/' '{print $1;}')";
 		echo "├── <a href="./"${var}"/">RUN ID: "${var}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
 	done;
 
