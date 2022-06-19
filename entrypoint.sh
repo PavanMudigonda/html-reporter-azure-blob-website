@@ -88,9 +88,9 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 
 # Azure Blob AzCopy List 
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; 
 	do 
-	  var=$(awk -F '/' '{print $1;}');
+	  var=$(awk -F '/' '{print $0;}');
 	  echo $var >> array.txt
 	done;
 sh -c "cat array.txt"
