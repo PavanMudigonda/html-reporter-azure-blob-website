@@ -41,27 +41,6 @@ if [[ ${INPUT_REPORT_URL} != '' ]]; then
     AZ_WEBSITE_URL="${INPUT_REPORT_URL}"
 fi
 
-
-#----------------------------------------------------------------------------------------------------------------------------------------
-
-
-cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
-
-echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sort -n | while read line; 
-	do 
-	  VAR="$(awk -F '/' '{print $1;}' )"; echo $VAR;
-	  echo "├── <a href="./"${VAR}"/">RUN ID: "${VAR}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
-	done;
-
-echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
-cat ./${INPUT_RESULTS_HISTORY}/index.html
-
-
-echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
-cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
-
-
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -80,38 +59,47 @@ azcopy --version
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
+cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
+
+echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
+
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | sort -n | while read line; 
+    do 
+      VAR="$(awk -F '/' '{print $1;}')";
+      echo "├── <a href="./"${VAR}"/">RUN ID: "${VAR}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
+    done;
+
+echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
+cat ./${INPUT_RESULTS_HISTORY}/index.html
+
+
+echo "copy test-results to ${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
+cp -R ./${INPUT_TEST_RESULTS}/. ./${INPUT_RESULTS_HISTORY}/${INPUT_GITHUB_RUN_NUM}
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
 # Azure Blob Upload
 
 sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true"
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
-
-# Azure Blob AzCopy List 
-
-#----------------------------------------------------------------------------------------------------------------------------------------
-# AzCopy Delete 
-
-#sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true"
-
-#----------------------------------------------------------------------------------------------------------------------------------------
-
-
 # # Delete history
-# COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
+COUNT=$( sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | wc -l )
 
-# echo "count folders in results-history: ${COUNT}"
-# echo "keep reports count ${INPUT_KEEP_REPORTS}"
-# INPUT_KEEP_REPORTS=$((INPUT_KEEP_REPORTS+1))
-# echo "if ${COUNT} > ${INPUT_KEEP_REPORTS}"
-# if (( COUNT > INPUT_KEEP_REPORTS )); then
-#   NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}))
-#   echo "remove old reports"
-#   echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}"
-#   sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | sort -n | while read -r line;
-#     do
-#       sh -c "aws s3 rm s3://${AWS_S3_BUCKET}/${line}/ --recursive";
-#       echo "deleted prefix folder : ${line}";
-#     done;
-# fi
-
+echo "count folders in results-history: ${COUNT}"
+echo "keep reports count ${INPUT_KEEP_REPORTS}"
+INPUT_KEEP_REPORTS=$((INPUT_KEEP_REPORTS+1))
+echo "if ${COUNT} > ${INPUT_KEEP_REPORTS}"
+if (( COUNT > INPUT_KEEP_REPORTS )); then
+  NUMBER_OF_FOLDERS_TO_DELETE=$((${COUNT}-${INPUT_KEEP_REPORTS}))
+  echo "remove old reports"
+  echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}"
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} sort -n | while read line; 
+    do 
+      VAR="$(awk -F '/' '{print $1;}')";
+      sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}/${VAR}/*?${INPUT_SAS}' --recursive=true"
+      echo "deleted prefix folder : ${line}";
+    done;
+fi
