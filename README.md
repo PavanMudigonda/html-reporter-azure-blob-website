@@ -43,10 +43,6 @@ jobs:
 
 Note:- Always the index.html points to Test Results History Page.
 
-<img width="864" alt="image" src="https://user-images.githubusercontent.com/29324338/174341492-4f057d11-4f87-44aa-9842-ed982ab6a3e9.png">
-
-### when you click on a link
-
 <img width="529" alt="image" src="https://user-images.githubusercontent.com/29324338/174486678-271f0cf2-e778-41cf-acc1-e4a119c01452.png">
 
 ### AWS S3 Static Website Sample:- Full Report, Errors, Screenshots, Trace, Video is fully visible !
