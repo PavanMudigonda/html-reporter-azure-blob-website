@@ -92,6 +92,7 @@ sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_
 	do 
 	  awk -F '/' '{print $1;}' >> array.txt
 	done;
+cat array.txt
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 # AzCopy Delete 
