@@ -48,10 +48,12 @@ fi
 cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
-# sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line;
-#     do
-#         echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
-#     done;
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; 
+	do 
+		var=$(awk -F '/' '{print $1;}');
+		echo "├── <a href="./"${var}"/">RUN ID: "${var}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; 
+	done;
+
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 # cat ./${INPUT_RESULTS_HISTORY}/index.html
 
@@ -87,10 +89,6 @@ sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blo
 
 
 # Azure Blob AzCopy List 
-
-echo "{" >> array.json
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO: " | sed 's/INFO: //' | while read line; do awk -F '/' '{print $1;}'; done; | uniq;
-
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 # AzCopy Delete 
