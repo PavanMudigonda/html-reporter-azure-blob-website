@@ -78,6 +78,16 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
 fi;
 #----------------------------------------------------------------------------------------------------------------------------------------
 
+# List Blobs Post Delete
+rm -rf folder_file.txt clean_folder_file.txt
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" | grep "INFO:" | sed 's/INFO: //' | while read line; 
+    do 
+    	FOLDER_NAME="$( cut -d '/' -f 1 <<< "$line" )"; 
+	NEW_FOLDER_NAME="$( cut -d ';' -f 1 <<< "$FOLDER_NAME" )";  
+	echo "$NEW_FOLDER_NAME" >> folder_file.txt
+        sort -u folder_file.txt | grep -v 'index.html' > clean_folder_file.txt
+    done;
+#----------------------------------------------------------------------------------------------------------------------------------------
 # Construct Index.html file
 
 cat index-template.html > ./${INPUT_RESULTS_HISTORY}/index.html
