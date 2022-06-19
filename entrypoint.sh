@@ -69,7 +69,7 @@ sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_
         sort -u folder_file.txt > clean_folder_file.txt
     done;
 
-cat clean_folder_file.txt | while read line; do echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; done
+cat clean_folder_file.txt | sort -n | while read line; do echo "├── <a href="./"${line}"/">RUN ID: "${line}"</a><br>" >> ./${INPUT_RESULTS_HISTORY}/index.html; done
 
 echo "</html>" >> ./${INPUT_RESULTS_HISTORY}/index.html;
 cat ./${INPUT_RESULTS_HISTORY}/index.html
