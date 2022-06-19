@@ -96,7 +96,7 @@ sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_
 	  echo $var+',' >> array.json
 	done;
 echo "}" >> array.json
-sh -c "cat array.txt"
+sh -c "cat array.json"
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 # AzCopy Delete 
