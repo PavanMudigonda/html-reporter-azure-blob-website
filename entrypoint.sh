@@ -76,15 +76,21 @@ cd ..
 # Check that azcopy command works from container
 azcopy --version
 
+#----------------------------------------------------------------------------------------------------------------------------------------
+
  
 # Azure Blob Upload
 
 sh -c "azcopy sync '${INPUT_RESULTS_HISTORY}' 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true"
 
+#----------------------------------------------------------------------------------------------------------------------------------------
+
 
 # Azure Blob AzCopy List 
 
-sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'"
+sh -c "azcopy list 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}'" --output-type json
+
+#----------------------------------------------------------------------------------------------------------------------------------------
 
 # # Delete history
 # COUNT=$( sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" | sort -n | grep "PRE" | wc -l )
