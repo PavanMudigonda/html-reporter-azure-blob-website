@@ -72,7 +72,7 @@ if (( COUNT > INPUT_KEEP_REPORTS )); then
   echo "number of folders to delete ${NUMBER_OF_FOLDERS_TO_DELETE}";
   cat clean_folder_file.txt | sort -n | head -n ${NUMBER_OF_FOLDERS_TO_DELETE} | while read line;
   	do
-  		sh -c "azcopy rm 'https://${INPUT_ACCOUNT_NAME}.blob.core.windows.net/${INPUT_CONTAINER}?${INPUT_SAS}' --recursive=true --include-path ${line}";
+		az storage blob delete-batch -s ${INPUT_CONTAINER} --sas-token ${INPUT_SAS} --account-name ${INPUT_ACCOUNT_NAME} --delete-snapshots --pattern ${line}/*
 	        echo "deleted prefix folder : ${line}";
 	done;
 fi;
