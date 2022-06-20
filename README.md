@@ -1,10 +1,10 @@
 | **Reporter**        | **Github Pages**   | **Azure Storage Static Website** | **AWS S3 Static Website**                                                                    |
 |---------------------|--------------------|-------------------------------|----------------------------------------------------------------------------------------------|
-| **Allure HTML**     | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-github-pages) | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-azureblob-website)            | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-s3-website )      |
-| **Any HTML Reports** | [GH Action Link](https://github.com/marketplace/actions/html-reporter-github-pages) | [GH Action Link](https://github.com/marketplace/actions/html-reporter-azureblob-website)            | [GH Action Link](https://github.com/marketplace/actions/html-reporter-aws-s3-website) |
+| **Allure HTML**     | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-github-pages) | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-azure-website)            | [GH Action Link](https://github.com/marketplace/actions/allure-html-reporter-s3-website )      |
+| **Any HTML Reports** | [GH Action Link](https://github.com/marketplace/actions/html-reporter-github-pages) | [GH Action Link](https://github.com/marketplace/actions/html-reporter-azure-website)            | [GH Action Link](https://github.com/marketplace/actions/html-reporter-aws-s3-website) |
 
 
-Example workflow file [html-reporter-azure-blob-website](https://github.com/PavanMudigonda/html-reporter-azure-blob-website/blob/main/.github/workflows/main.yml))
+Example workflow file [html-reporter-azure-blob-website](https://github.com/PavanMudigonda/html-reporter-azure-website/blob/main/.github/workflows/main.yml))
 
 # HTML Test Results on Azure Blob with history action
 
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Test Results History
-        uses: PavanMudigonda/html-reporter-azure-blob-website@v0.1
+        uses: PavanMudigonda/html-reporter-azure-website@v0.1
         with:
           test_results: test-results
           results_history: results-history
