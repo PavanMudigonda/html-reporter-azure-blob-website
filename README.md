@@ -46,7 +46,7 @@ This Action defines the following formal inputs.
 | **`account_name`**  | true | Azure Account Name is mandatory.
 | **`container`** | true | Azure Container name is mandatory.
 |**`sas`** | true | Azure Shared Access Signature (SAS) Token is Mandatory for Azure Storage.
-|**`keep_reports`** | false | Defaults to 0. If you want this action to delete reports which are more than certian limit, then mention that limit.
+|**`keep_reports`** | false | Defaults to 20. If you want this action to delete reports which are more than certian limit, then mention that limit.
 |**`report_url`** | true | Specify your website URL. You could use Github Secrets.
 |**`results_history`** | false | Defaults to results-history.
 |**`test_results`** | false | Defaults to test-results. If your results are outputed to another folder, please specify.
