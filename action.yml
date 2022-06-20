@@ -1,4 +1,4 @@
-name: 'html-reporter-azureblob-website'
+name: 'html-reporter-azure-website'
 description: 'HTML Test Results with history to publish to Azure Blob'
 author: 'Pavan Mudigonda'
 branding:
