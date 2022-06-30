@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Test Results History
-        uses: PavanMudigonda/html-reporter-azure-website@v0.1
+        uses: PavanMudigonda/html-reporter-azure-website@v1.0
         with:
           test_results: test-results
           results_history: results-history
